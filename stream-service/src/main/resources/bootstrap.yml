@@ -1,0 +1,6 @@
+spring.application.name: stream-service
+#------------日志-------------------
+logging:
+  config: classpath:logback-spring.xml
+  path: /data/deploy/log/stream
+

@@ -18,7 +18,7 @@
     -->
     <!-- 从yml中读取配置 -->
     <springProperty scope="context" name="SERVICE_NAME" source="spring.application.name" defaultValue="service.log"/>
-    <springProperty scope="context" name="LOG_PATH" source="logback.filepath" defaultValue="/data/deploy/log"/>
+    <springProperty scope="context" name="LOG_PATH" source="logging.path" defaultValue="/data/deploy/log"/>
 
 
 
