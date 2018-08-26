@@ -12,8 +12,16 @@
     limitations under the License.
 -->
 <configuration debug="false">
-    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-    <property name="LOG_HOME" value="/data/deploy/log/stream" />
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径
+    <property name="LOG_HOME" value="${logback.filepath}" />
+    <property name="SERVICE_NAME" value="${spring.application.name}" />
+    -->
+    <!-- 从yml中读取配置 -->
+    <springProperty scope="context" name="SERVICE_NAME" source="spring.application.name" defaultValue="service.log"/>
+    <springProperty scope="context" name="LOG_PATH" source="logback.filepath" defaultValue="/data/deploy/log"/>
+
+
+
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -25,7 +33,7 @@
     <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_HOME}/stream.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${LOG_PATH}/${SERVICE_NAME}.%d{yyyy-MM-dd}.log</FileNamePattern>
             <!--日志文件保留天数-->
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>

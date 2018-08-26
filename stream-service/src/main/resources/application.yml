@@ -126,11 +126,6 @@ swagger:
 #email-service.url: 172.16.225.141:9092
 
 
-#-------------日志级别------------------
-logging.level.root: INFO
-#配置日志
-logging.level:
-    xatu.zsl: debug #不同目录下的日志可配置不同级别
-    org.springfromework.web: INFO
-  #采用相对路径方式将日志文件输出到
-logging.file: /data/deploy/log/stream/stream-service.log
+#-------------日志------------------
+#logback.filepath: /Users/pan/log
+logback.filepath: /data/deploy/log/stream
