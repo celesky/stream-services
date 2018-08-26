@@ -45,7 +45,7 @@ spring.cloud.stream.kafka.streams.binder:
 #--------------------------------------
 # route_in_topic 消费数据
 spring.cloud.stream.bindings.aggregateIn:
-    destination: source_event_topic_4
+    destination: source_event_topic
     content-type: application/json
     consumer:
       header-mode: raw
@@ -128,3 +128,9 @@ swagger:
 
 #-------------日志级别------------------
 logging.level.root: INFO
+#配置日志
+logging.level:
+    xatu.zsl: debug #不同目录下的日志可配置不同级别
+    org.springfromework.web: INFO
+  #采用相对路径方式将日志文件输出到
+logging.file: /data/deploy/log/stream/stream-service.log

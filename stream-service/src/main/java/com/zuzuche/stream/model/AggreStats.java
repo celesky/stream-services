@@ -75,7 +75,7 @@ public class AggreStats {
             double percent = (double) Math.round(v.doubleValue()*100/(double)sumCount)/100;
             metricPercentMap.put(k,percent);
         });
-        //log.info(">>>>>"+this.toString());
+        log.info(">>>>>"+this.toString());
         return this;
     }
 

@@ -81,7 +81,7 @@ public class TestProducer {
                 SourceEvent event = new SourceEvent(planId,indecator,Instant.now().toEpochMilli(),count);
 
                 // Note that we are using ticker as the key - so all asks for same stock will be in same partition
-                ProducerRecord<String, SourceEvent> record = new ProducerRecord<>("source_event_topic_4", planId, event);
+                ProducerRecord<String, SourceEvent> record = new ProducerRecord<>("source_event_topic", planId, event);
 
                 producer.send(record, (RecordMetadata r, Exception e) -> {
                     System.out.println("send ticker success:" + event.toString());
@@ -91,7 +91,7 @@ public class TestProducer {
                     }
                 });
             }
-            Thread.sleep(100);
+            Thread.sleep(1000);
         }
     }
 
