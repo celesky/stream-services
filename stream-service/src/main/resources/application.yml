@@ -128,4 +128,4 @@ swagger:
 
 #-------------日志------------------
 #logback.filepath: /Users/pan/log
-logback.filepath: /data/deploy/log/stream
+logback.filepath: /data/deploy/log/sentry
