@@ -6,7 +6,7 @@ import com.zuzuche.stream.serde.base.JsonSerializer;
 import com.zuzuche.stream.serde.base.WrapperSerde;
 
 /**
- * @desc:
+ * @desc: 源事件序列化
  * @author: panqiong
  * @date: 2018/8/18
  */

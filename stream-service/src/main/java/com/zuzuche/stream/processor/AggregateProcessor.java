@@ -36,7 +36,7 @@ public class AggregateProcessor {
                         (k, v, reduceStats) -> reduceStats.add(v), // 更新窗口内的计算结果 。
                         TimeWindows.of(60000).advanceBy(60000),    // 定义时间窗口
                         new JsonSerde<>(AggreStats.class),                   // 序列化和反序列化结果
-                        "60-60-store"        // 本地状态存储名字
+                        null      // 本地状态存储名字
                 )
                 .toStream((key, value) -> new MoveWindow(key.key(),windowId, key.window().start(),key.window().end()))
                 // 遍历values并进行计算百分比率
