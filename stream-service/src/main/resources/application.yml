@@ -4,8 +4,8 @@ feign.hystrix.enabled: true
 
 #--------服务注册------
 eureka.client:
-        register-with-eureka: false
-        fetch-registry: false
+        register-with-eureka: true
+        fetch-registry: true
         registry-fetch-interval-seconds: 10
         service-url:
           service-url:
