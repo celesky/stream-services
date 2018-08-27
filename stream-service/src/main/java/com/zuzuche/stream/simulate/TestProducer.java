@@ -73,15 +73,15 @@ public class TestProducer {
 
         while (true) {
             iter++;
-            for (String planId : Constants.plans) {
+            for (String groupId : Constants.groupIds) {
 
                 int count = (int) (Math.random() * 10);
-                int index = (int) (Math.random() * Constants.indecators.length);
-                String indecator = Constants.indecators[index];
-                SourceEvent event = new SourceEvent(planId,indecator,Instant.now().toEpochMilli(),count);
+                int index = (int) (Math.random() * Constants.metrics.length);
+                String metric = Constants.metrics[index];
+                SourceEvent event = new SourceEvent(groupId,metric,Instant.now().toEpochMilli(),count);
 
                 // Note that we are using ticker as the key - so all asks for same stock will be in same partition
-                ProducerRecord<String, SourceEvent> record = new ProducerRecord<>("source_event_topic", planId, event);
+                ProducerRecord<String, SourceEvent> record = new ProducerRecord<>("source_event_topic", groupId, event);
 
                 producer.send(record, (RecordMetadata r, Exception e) -> {
                     System.out.println("send ticker success:" + event.toString());

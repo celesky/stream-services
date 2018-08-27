@@ -52,11 +52,7 @@ public class TestProducer2 {
         // Starting producer
         producer = new KafkaProducer<>(props);
 
-
-
         long iter = 0;
-
-
 
         // Start generating events, stop when CTRL-C
         String[] randomWords = new String[]{"foo", "bar", "foobar", "baz", "fox"};

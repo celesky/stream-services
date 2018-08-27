@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MoveWindow {
-    private String planId;
+    private String metricGroupId;
     private int windowId;
     private long startTimestamp;
     private long endTimestamp;

@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AggreStats {
 
     // 按照planId分组 聚合
-    String planId; // 所属监控计划
+    String metricGroupId; // 所属监控计划
     // metric-->count 计划对应的监控指标 以及 总数
     Map<String,AtomicLong> metricCountMap = new ConcurrentHashMap<>();
     // 用于存放计算后的 指标 以及 百分比
@@ -39,29 +39,34 @@ public class AggreStats {
      * @return
      */
     public AggreStats add(SourceEvent event) {
-        // log.info(">>>>>"+event.toString());
-        if (event.getPlanId() == null || event.getIndecator() == null)
-            throw new IllegalArgumentException("Invalid event to aggregate: " + event.toString());
+        try{
+            // log.info(">>>>>"+event.toString());
+            if (event.getMetricGroupId() == null || event.getMetric() == null)
+                throw new IllegalArgumentException("Invalid event to aggregate: " + event.toString());
 
-        if (this.planId == null){
-            this.planId = event.getPlanId();
-        }
+            if (this.metricGroupId == null){
+                this.metricGroupId = event.getMetricGroupId();
+            }
 
-        // planId不一致
-        if(!this.planId.equals(event.getPlanId())){
-            throw new IllegalArgumentException("Aggregating stats for planId  " + this.planId +  " but recieved trade of planId " + event.getPlanId() );
-        }
+            // planId不一致
+            if(!this.metricGroupId.equals(event.getMetricGroupId())){
+                throw new IllegalArgumentException("Aggregating stats for planId  " + this.metricGroupId +  " but recieved trade of metricGroupId " + event );
+            }
 
 //        // 如果已经有这个指标的数据 对其累加
-        if (this.metricCountMap.containsKey(event.getIndecator())){
-            metricCountMap.get(event.getIndecator()).getAndAdd(event.getCount());
-        }else{
-            // 初始化一个0进去
-            metricCountMap.putIfAbsent(event.getIndecator(),new AtomicLong(0));
-            metricCountMap.get(event.getIndecator()).getAndAdd(event.getCount());
+            if (this.metricCountMap.containsKey(event.getMetric())){
+                metricCountMap.get(event.getMetric()).getAndAdd(event.getCount());
+            }else{
+                // 初始化一个0进去
+                metricCountMap.putIfAbsent(event.getMetric(),new AtomicLong(0));
+                metricCountMap.get(event.getMetric()).getAndAdd(event.getCount());
+            }
+            //累加总数
+            sumCount = this.sumCount+event.getCount();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        //累加总数
-        sumCount = this.sumCount+event.getCount();
+
         //log.info(">>>>>"+this.toString());
         return this;
     }
