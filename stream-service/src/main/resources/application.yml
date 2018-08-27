@@ -11,6 +11,7 @@ management.endpoints.web.exposure.include: '*'
 
 #--------服务注册------
 eureka.instance.prefer-ip-address: true
+
 eureka.client:
         register-with-eureka: true
         fetch-registry: true
