@@ -2,6 +2,13 @@ server.port: 9100
 #--------启用熔断-----
 feign.hystrix.enabled: true
 
+#--------健康检查端点------
+#开放所有端点
+management.endpoints.enabled-by-default: true
+management.endpoint.beans.enabled: true
+management.endpoint.info.enabled: true
+management.endpoints.web.exposure.include: '*'
+
 #--------服务注册------
 eureka.client:
         register-with-eureka: true
