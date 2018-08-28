@@ -1,4 +1,11 @@
+spring.application.name: stream-service
 server.port: 9100
+#------------日志-------------------
+logging:
+  config: classpath:logback-spring.xml
+  path: /data/deploy/log/stream
+
+
 #--------启用熔断-----
 feign.hystrix.enabled: true
 
@@ -133,3 +140,4 @@ swagger:
 
 #-------------日志------------------
 #logback.filepath: /Users/pan/log
+

@@ -1,0 +1,143 @@
+spring.application.name: stream-service
+server.port: 9100
+#------------日志-------------------
+logging:
+  config: classpath:logback-spring.xml
+  path: /data/deploy/log/stream
+
+
+#--------启用熔断-----
+feign.hystrix.enabled: true
+
+#--------健康检查端点------
+#开放所有端点
+management.endpoints.enabled-by-default: true
+management.endpoint.beans.enabled: true
+management.endpoint.info.enabled: true
+management.endpoints.web.exposure.include: '*'
+
+#--------服务注册------
+eureka.instance.prefer-ip-address: true
+
+eureka.client:
+        register-with-eureka: true
+        fetch-registry: true
+        registry-fetch-interval-seconds: 10
+        service-url:
+            defaultZone: http://192.168.100.96:1111/eureka
+
+#--------------------------------------------
+spring.kafka:
+        bootstrap-servers: 192.168.100.94:9092,192.168.100.96:9093,192.168.100.96:9094
+        #bootstrap-servers: 47.106.140.44:9092
+        consumer:
+          #client-id:
+          group-id: stream-service
+          # earliest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
+          # latest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+          # none:topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
+          auto-offset-reset: latest
+          key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+          value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        producer:
+          key-serializer: org.apache.kafka.common.serialization.StringSerializer
+          value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
+spring.cloud.stream.kafka.streams.binder:
+            #brokers: 192.168.100.94:9092,192.168.100.96:9093,192.168.100.96:9094
+            applicationId: stream-app
+            brokers: 192.168.100.94:9092,192.168.100.96:9093,192.168.100.96:9094
+            configuration:
+              default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              default.value.serde: com.zuzuche.stream.serde.SourceEventSerde
+              #default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              commit.interval.ms: 1000
+
+#--------------------------------------
+# route_in_topic 消费数据
+spring.cloud.stream.bindings.aggregateIn:
+    destination: source_event_topic
+    content-type: application/json
+    consumer:
+      header-mode: raw
+      use-native-decoding: true
+
+
+spring.cloud.stream.bindings.aggregateOut:
+    destination: aggre_stats_topic
+    content-type: application/json
+    consumer:
+      header-mode: raw
+      use-native-decoding: true
+
+
+#
+#spring.cloud.stream.bindings.input:
+#  #destination: words
+#  destination: source_event_topic_4
+#  content-type: application/json
+#  consumer:
+#    headerMode: raw
+#
+#
+#spring.cloud.stream.bindings.output:
+#  #destination: counts
+#  destination: aggre_stats_topic
+#  content-type: application/json
+#  producer:
+#    headerMode: raw
+#    #useNativeEncoding: true
+
+
+
+
+
+#spring.cloud.stream.kafka.streams.bindings.input.consumer.keySerde: org.apache.kafka.common.serialization.Serdes$StringSerde
+#spring.cloud.stream.kafka.streams.bindings.input.consumer.valueSerde: com.zuzuche.stream.serde.SourceEventSerde
+#spring.cloud.stream.kafka.streams.bindings.input.producer.keySerde: org.apache.kafka.common.serialization.Serdes$StringSerde
+#spring.cloud.stream.kafka.streams.bindings.input.producer.valueSerde: com.zuzuche.stream.serde.SourceEventSerde
+#
+#
+#spring.cloud.stream.kafka.streams.bindings.output.consumer.keySerde: com.zuzuche.stream.serde.MoveWindowSerde
+#spring.cloud.stream.kafka.streams.bindings.output.consumer.valueSerde: com.zuzuche.stream.serde.AggreStatsSerde
+#spring.cloud.stream.kafka.streams.bindings.output.producer.keySerde: com.zuzuche.stream.serde.MoveWindowSerde
+#spring.cloud.stream.kafka.streams.bindings.output.producer.valueSerde: com.zuzuche.stream.serde.AggreStatsSerde
+#
+
+
+
+spring.cloud.stream.kafka.streams.bindings.aggregateIn.consumer.keySerde: org.apache.kafka.common.serialization.Serdes$StringSerde
+spring.cloud.stream.kafka.streams.bindings.aggregateIn.consumer.valueSerde: com.zuzuche.stream.serde.SourceEventSerde
+spring.cloud.stream.kafka.streams.bindings.aggregateIn.producer.keySerde: org.apache.kafka.common.serialization.Serdes$StringSerde
+spring.cloud.stream.kafka.streams.bindings.aggregateIn.producer.valueSerde: com.zuzuche.stream.serde.SourceEventSerde
+
+spring.cloud.stream.kafka.streams.bindings.aggregateOut.consumer.keySerde: com.zuzuche.stream.serde.MoveWindowSerde
+spring.cloud.stream.kafka.streams.bindings.aggregateOut.consumer.valueSerde: com.zuzuche.stream.serde.AggreStatsSerde
+spring.cloud.stream.kafka.streams.bindings.aggregateOut.producer.keySerde: com.zuzuche.stream.serde.MoveWindowSerde
+spring.cloud.stream.kafka.streams.bindings.aggregateOut.producer.valueSerde: com.zuzuche.stream.serde.AggreStatsSerde
+
+
+
+
+#------------mybatis 配置--------------
+
+mybatis.mapper-locations: classpath*:mapper/*.xml
+
+
+
+#------------swagger api 配置-----接口文档访问地址>> http://localhost:port/swagger-ui.html <<---------
+swagger:
+  title: 监控服务接口文档
+  desc: rest风格接口文档
+  version: 1.0
+
+
+#------------外部服务-------------------
+#sms-service.url: 127.0.0.1:8080
+#email-service.url: 172.16.225.141:9092
+
+
+#-------------日志------------------
+#logback.filepath: /Users/pan/log
+
